@@ -18,9 +18,6 @@ PrimaryGeneratorAction::PrimaryGeneratorAction()
 {
   // Create particle gun with 1 particle
   fParticleGun = new G4ParticleGun(1);
-
-  // Define default particle as geantino
-//  fParticleGun->SetParticleDefinition(G4Geantino::Geantino());
   fParticleGun->SetParticleEnergy(0.0 * eV);
   fParticleGun->SetParticlePosition(G4ThreeVector(0., 0., 10.*cm));
   fParticleGun->SetParticleMomentumDirection(G4ThreeVector(0., 0., -1.));
@@ -48,18 +45,6 @@ void PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
 
   if (doSource)
   {
-    // Switch to ion only if we’re still set to geantino
-    if (fParticleGun->GetParticleDefinition() == G4Geantino::Geantino())
-    {
-    G4int Z = 19, A = 40;
-    G4double ionCharge = 0. * eplus;
-    G4double excitEnergy = 0. * keV;
-
-    G4ParticleDefinition* ion = G4IonTable::GetIonTable()->GetIon(Z, A, excitEnergy);
-    fParticleGun->SetParticleDefinition(ion);
-    fParticleGun->SetParticleCharge(ionCharge);
-
-    }
     fParticleGun->GeneratePrimaryVertex(anEvent);
   }
 
