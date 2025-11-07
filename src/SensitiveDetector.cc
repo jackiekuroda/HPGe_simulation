@@ -29,11 +29,13 @@ void SensitiveDetector::EndOfEvent(G4HCofThisEvent *)
     {	G4double a =0.00222277*MeV;
         G4double b = 0.0000129192381*MeV;
 	G4double c = .00000108356979*MeV;
-        G4double FWHM = std::sqrt(c*fTotalEnergyDeposited*fTotalEnergyDeposited+b*fTotalEnergyDeposited+a*a);
+//        G4double FWHM = std::sqrt(c*fTotalEnergyDeposited*fTotalEnergyDeposited+b*fTotalEnergyDeposited+a*a);
 
-        G4double smear = G4RandGauss::shoot(fTotalEnergyDeposited, FWHM/2.35);
+//        G4double smear = G4RandGauss::shoot(fTotalEnergyDeposited, FWHM/2.35);
 
-        analysisManager->FillH1(0,  smear);
+//        analysisManager->FillH1(0,  smear);
+
+	analysisManager->FillH1(0, fTotalEnergyDeposited)
    }
 }
 
