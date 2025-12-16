@@ -1,52 +1,59 @@
 #include "BackgroundGeneratorAction.hh"
-#include "G4GeneralParticleSource.hh"
+#include "G4ParticleGun.hh"
 #include "G4SystemOfUnits.hh"
-#include "G4Gamma.hh"
 #include "G4IonTable.hh"
+#include "G4ParticleDefinition.hh"
 #include "G4ParticleTable.hh"
-
+#include "Randomize.hh"
 
 Background::Background()
 {
-   fBackgroundSource = new G4GeneralParticleSource();
+   fBackgroundSource = new G4ParticleGun(1);
+}
 
-   fBackgroundSource->ClearAll();
+void Background::GeneratePrimaryVertex(G4Event* event)
+{
 
-   G4int id =1;
-   //creating background radiation
-
-   auto addSource = [this](G4int element, G4int A_number, G4int Z_number,G4double intensity, G4int sourceId)
+   auto ion_source = [&](G4int Z, G4int A)
    {
-	   G4double ionCharge = 0.0 * eplus;
-	   G4double excitation = 0 * keV;
-	   G4ParticleDefinition* ion = G4IonTable::GetIonTable()->GetIon(Z_number, A_number, excitation)
+	G4ParticleDefinition* ion = G4IonTable::GetIonTable()->GetIon(Z, A, 0.0*keV);
 
-           fBackgroundSource->AddaSource(intensity);
-           fBackgroundSource->GetCurrentSource();
+	fBackgroundSource->SetParticleDefinition(ion);
+	fBackgroundSource->SetParticleEnergy(0.0 *keV);
 
-           auto src = fBackgroundSource->GetCurrentSource();
+	G4double x = 0;
+	G4double y = 0;
+	G4double z = 0;
 
-	   src->SetParticleDefinition(ion);
-	   src->SetParticleCharge(ionCharge);
 
-           auto pos = src->GetPosDist();
-           pos->SetPosDisType("Surface");
-           pos->SetPosDisShape("Para");
-           pos->SetHalfX(.5 *m);
-           pos->SetHalfY(.5 *m);
-           pos->SetHalfZ(.5 *m);
+        fBackgroundSource->SetParticlePosition(G4ThreeVector(x, y, z));
 
-           auto ang = src->GetAngDist();
-           ang->SetAngDistType("planar");
-           ang->SetParticleMomentumDirection(G4ThreeVector(0, 0, 1));
-
+ 	fBackgroundSource->GeneratePrimaryVertex(event);
 
    };
-   addSource(K,40,19,0,.8,id++);
-   addSource(U,235,92,0,.05,id++);
-   addSource(U,238,92,0,.05,id++);
-   addSource(Th,232,90,0,.1,id++);
 
+
+   G4double r = G4UniformRand();
+
+   if (r < 0.8)
+   {
+	ion_source(19, 40);
+   }
+
+   else if (r < 0.85)
+   {
+	ion_source(92, 235);
+   }
+
+   else if (r < 0.9)
+   {
+	ion_source(92, 238);
+   }
+
+   else
+   {
+	ion_source(90, 232);
+   }
 }
 
 Background::~Background()
@@ -54,7 +61,4 @@ Background::~Background()
 	delete fBackgroundSource;
 }
 
-void Background::GeneratePrimaryVertex(G4Event* anEvent)
-{
-	fBackgroundSource->GeneratePrimaryVertex(anEvent);
-}
+

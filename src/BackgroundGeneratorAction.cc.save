@@ -1,0 +1,70 @@
+#include "BackgroundGeneratorAction.hh"
+#include "G4GeneralParticleSource.hh"
+#include "G4SystemOfUnits.hh"
+#include "G4IonTable.hh"
+#include "G4ParticleDefinition.hh"
+#include "G4ParticleTable.hh"
+
+
+Background::Background()
+{
+      fBackgroundSource = new G4GeneralParticleGun();
+}
+
+/*
+
+   fBackgroundSource = new G4GeneralParticleSource();
+
+   auto addSource = [this](G4int A, G4int Z, G4double intensity)
+   {
+
+	   G4double excitation = 0 * keV;
+	   G4double ionCharge = 0.0 * eplus;
+
+           fBackgroundSource->AddaSource(intensity);
+           fBackgroundSource->GetCurrentSource();
+
+           auto src = fBackgroundSource->GetCurrentSource();
+
+	   src->SetParticleDefinition(G4GenericIon::Definition());
+
+	   src->SetParticleCharge(ionCharge);
+           src->GetSourceIon()->SetIon(Z, A, 0.0);
+
+           auto pos = src->GetPosDist();
+           pos->SetPosDisType("Surface");
+           pos->SetPosDisShape("Para");
+           pos->SetHalfX(.5 *m);
+           pos->SetHalfY(.5 *m);
+           pos->SetHalfZ(.5 *m);
+
+           auto ang = src->GetAngDist();
+           ang->SetAngDistType("planar");
+           ang->SetParticleMomentumDirection(G4ThreeVector(0, 0, 1));
+
+
+
+   };
+
+   addSource(40,19,.8);
+   addSource(235,92,.05);
+   addSource(238,92,.05);
+   addSource(232,90,.1);
+
+}
+*/
+
+void Background::GeneratePrimaryVertex(G4Event* event)
+{
+
+
+   fBackgroundSource->GeneratePrimaryVertex(event);
+}
+
+Background::~Background()
+{
+	delete fBackgroundSource;
+}
+
+
+

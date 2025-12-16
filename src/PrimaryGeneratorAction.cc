@@ -40,7 +40,7 @@ void PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
 
   if (fAlternate)
   {
-    doSource = (eventID % fPeriod == 0);
+    doSource = (eventID % fPeriod != 0);
   }
 
   if (doSource)

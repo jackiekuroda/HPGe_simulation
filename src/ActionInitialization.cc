@@ -1,12 +1,13 @@
 #include "ActionInitialization.hh"
-
+#include "G4GenericIon.hh"
 #include "PrimaryGeneratorAction.hh"
+#include "BackgroundGeneratorAction.hh"
 #include "TrackingAction.hh"
 
 ActionInitialization::ActionInitialization(DetectorConstruction* detector) : fDetector(detector) {}
 
 
-ActionInitialization::~ActionInitialization() {} 
+ActionInitialization::~ActionInitialization() {}
 
 void ActionInitialization::BuildForMaster() const
 {
@@ -17,6 +18,8 @@ void ActionInitialization::BuildForMaster() const
 
 void ActionInitialization::Build() const
 {
+  G4GenericIon::Definition();
+
   PrimaryGeneratorAction* primary = new PrimaryGeneratorAction();
   SetUserAction(primary);
 
