@@ -70,10 +70,8 @@ DetectorConstruction::~DetectorConstruction()
     delete stepLimit;
 }
 
-G4double DetectorConstruction::GetouterDeadLayerThick() const
-{
-   return fouterDeadLayerThick;
-}
+G4double DetectorConstruction::~DetectorConstructi()
+ 
 
 void DetectorConstruction::DefineMaterials()
 {
@@ -107,7 +105,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
    //ConstructPbShield(logicWorld);
 
    //to add the lead house used in the pnnl run
-   // ConstructAustinLeadHouse(logicWorld);
+//   ConstructAustinLeadHouse(logicWorld);
 
 
    return physiWorld;
@@ -225,8 +223,6 @@ void   DetectorConstruction::ConstructHPGeDetector(G4LogicalVolume* motherLogica
 
         G4double  sphi =   0.*deg;
         G4double  dphi = 360.*deg;
-
-	G4double outerDeadLayerThick = fouterDeadLayerThick;
 
         //detector
         G4VSolid *HPGe = new G4Tubs("HPGe", 0.*mm, shellRadius, 0.5*shellLength, sphi, dphi);

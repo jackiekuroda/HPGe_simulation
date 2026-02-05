@@ -20,7 +20,7 @@ class G4UserLimits;
 class DetectorConstruction : public G4VUserDetectorConstruction
 {
 public:
-    DetectorConstruction();
+    DetectorConstruction(G4double outerDeadLayerThick);
     virtual ~DetectorConstruction();
 
     G4LogicalVolume* GetLogicDetector() const { return fLogActiveCrystal; }
@@ -58,6 +58,8 @@ public:
    void SetDetectorThickness(G4double thickness);
    void SetDetectorMaterial(const G4String& name);
 
+   G4double GetouterDeadLayerThick() const;
+
 private:
 
     void DefineMaterials();
@@ -85,14 +87,15 @@ private:
     G4double crystalEndRadius;
     G4double holeDepth;
     G4double holeRadius;
-    G4double outerDeadLayerThick;
+    //G4double outerDeadLayerThick;
+    G4double fouterDeadLayerThick;
     G4double innerDeadLayerThick;
 
     //holder
     G4double holderLength;
-    G4double holderThick ;
-    G4double holderTopThick ;
-    G4double holderBottomThick ;
+    G4double holderThick;
+    G4double holderTopThick;
+    G4double holderBottomThick;
     G4double mylarThick;
     G4double kaptonThick;
     G4double SourceMove;
