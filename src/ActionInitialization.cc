@@ -3,6 +3,7 @@
 #include "PrimaryGeneratorAction.hh"
 #include "BackgroundGeneratorAction.hh"
 #include "TrackingAction.hh"
+#include "SteppingAction.hh"
 
 ActionInitialization::ActionInitialization(DetectorConstruction* detector) : fDetector(detector) {}
 
@@ -23,8 +24,12 @@ void ActionInitialization::Build() const
   PrimaryGeneratorAction* primary = new PrimaryGeneratorAction();
   SetUserAction(primary);
 
+  SteppingAction* stepping = new SteppingAction();
+  SetUserAction(stepping);
+
   RunAction* runAction = new RunAction(fDetector, primary);
   SetUserAction(runAction);
+
   SetUserAction(new TrackingAction());
 
 }

@@ -10,6 +10,8 @@
 #include "DetectorConstruction.hh"
 #include "PrimaryGeneratorAction.hh"
 
+#include <fstream>
+
 class RunAction : public G4UserRunAction
 {
 public:
@@ -22,6 +24,8 @@ public:
 private:
     DetectorConstruction* fDetector = nullptr;
     PrimaryGeneratorAction* fPrimary = nullptr;
+    std::ofstream outFile;
+
 };
 
 #endif
