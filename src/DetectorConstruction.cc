@@ -290,7 +290,12 @@ void   DetectorConstruction::ConstructHPGeDetector(G4LogicalVolume* motherLogica
         //assigns as member variable
         fLogActiveCrystal = new G4LogicalVolume(activeCrystal, GeCrystal, "logActiveCrystal");
 
-        //placing the detector shell in the detector volume
+	G4double maxStep = 0.0001*mm;
+	G4UserLimits* stepLimit = new G4UserLimits(maxStep);
+
+	fLogActiveCrystal->SetUserLimits(stepLimit);
+
+	//placing the detector shell in the detector volume
         new G4PVPlacement(0,G4ThreeVector(),logShell,"physiShell", logHPGe,false,0,fCheckOverlaps);
 	//
 	new G4PVPlacement(0,G4ThreeVector(0., 0.,0.5*(shellLength + mylarThick + 2*kaptonThick)-shellThick-endGap),logmylar,"physimylarLayer",logHPGe,false,0,fCheckOverlaps);

@@ -24,6 +24,8 @@
 #include "G4UAtomicDeexcitation.hh"
 #include "G4LossTableManager.hh"
 
+#include "G4StepLimiterPhysics.hh"
+
 // particles
 #include "G4BaryonConstructor.hh"
 #include "G4BosonConstructor.hh"
@@ -34,51 +36,55 @@
 
 PhysicsList::PhysicsList()
 {
-  G4int verb = 1;
-  SetVerboseLevel(verb);
+   G4int verb = 1;
+   SetVerboseLevel(verb);
 
-  // Mandatory for G4NuclideTable
-  // Half-life threshold must be set small or many short-lived isomers
-  // will not be assigned life times (default to 0)
-  G4NuclideTable::GetInstance()->SetThresholdOfHalfLife(0.1 * picosecond);
-  G4NuclideTable::GetInstance()->SetLevelTolerance(1.0 * eV);
+   // Mandatory for G4NuclideTable
+   // Half-life threshold must be set small or many short-lived isomers
+   // will not be assigned life times (default to 0)
+   G4NuclideTable::GetInstance()->SetThresholdOfHalfLife(0.1 * picosecond);
+   G4NuclideTable::GetInstance()->SetLevelTolerance(1.0 * eV);
 
-  // EM physics
-  RegisterPhysics(new G4EmStandardPhysics_option4());
+   // EM physics
+   RegisterPhysics(new G4EmStandardPhysics_option4());
 
-  RegisterPhysics(new G4DecayPhysics(verb));
-  RegisterPhysics(new G4RadioactiveDecayPhysics(verb));
+   RegisterPhysics(new G4DecayPhysics(verb));
+   RegisterPhysics(new G4RadioactiveDecayPhysics(verb));
 
-  // Hadron Elastic scattering
-  RegisterPhysics(new G4HadronElasticPhysics());
+   // Hadron Elastic scattering
+   RegisterPhysics(new G4HadronElasticPhysics());
 
-  // Hadron Inelastic physics
-  RegisterPhysics(new G4HadronPhysicsFTFP_BERT());
+   // Hadron Inelastic physics
+   RegisterPhysics(new G4HadronPhysicsFTFP_BERT());
 
-  // Ion Elastic scattering
-  RegisterPhysics(new G4IonElasticPhysics());
+   // Ion Elastic scattering
+   RegisterPhysics(new G4IonElasticPhysics());
 
-  // Ion Inelastic physics
-  RegisterPhysics(new G4IonPhysics());
+   // Ion Inelastic physics
+   RegisterPhysics(new G4IonPhysics());
 
-  // Gamma-Nuclear Physics
-  G4EmExtraPhysics* gnuc = new G4EmExtraPhysics();
-  gnuc->ElectroNuclear(false);
-  gnuc->MuonNuclear(false);
-  RegisterPhysics(gnuc);
+   // Gamma-Nuclear Physics
+   G4EmExtraPhysics* gnuc = new G4EmExtraPhysics();
+   gnuc->ElectroNuclear(false);
+   gnuc->MuonNuclear(false);
+   RegisterPhysics(gnuc);
+
+   RegisterPhysics(new G4StepLimiterPhysics());
+
+
 }
 
 
 void PhysicsList::ConstructProcess()
 {
-  G4VModularPhysicsList::ConstructProcess();
+   G4VModularPhysicsList::ConstructProcess();
 
-  auto* de = new G4UAtomicDeexcitation();
-  de->SetFluo(true);   // fluorescence X-rays
-  de->SetAuger(true);  // Auger e⁻
-  de->SetAugerCascade(true);
-  de->SetPIXE(true);   // particle-induced X-ray emission
-  G4LossTableManager::Instance()->SetAtomDeexcitation(de);
+   auto* de = new G4UAtomicDeexcitation();
+   de->SetFluo(true);   // fluorescence X-rays
+   de->SetAuger(true);  // Auger e⁻
+   de->SetAugerCascade(true);
+   de->SetPIXE(true);   // particle-induced X-ray emission
+   G4LossTableManager::Instance()->SetAtomDeexcitation(de);
 
 //  auto theRadDecay = new G4RadioactiveDecay();
 //  theRadDecay->SetARM(true);
@@ -89,30 +95,30 @@ void PhysicsList::ConstructProcess()
 
 void PhysicsList::ConstructParticle()
 {
-  G4BosonConstructor BosonConstructor;
-  BosonConstructor.ConstructParticle();
+   G4BosonConstructor BosonConstructor;
+   BosonConstructor.ConstructParticle();
 
-  G4LeptonConstructor LeptonConstructor;
-  LeptonConstructor.ConstructParticle();
+   G4LeptonConstructor LeptonConstructor;
+   LeptonConstructor.ConstructParticle();
 
-  G4MesonConstructor MesonConstructor;
-  MesonConstructor.ConstructParticle();
+   G4MesonConstructor MesonConstructor;
+   MesonConstructor.ConstructParticle();
 
-  G4BaryonConstructor BaryonConstructor;
-  BaryonConstructor.ConstructParticle();
+   G4BaryonConstructor BaryonConstructor;
+   BaryonConstructor.ConstructParticle();
 
-  G4IonConstructor IonConstructor;
-  IonConstructor.ConstructParticle();
+   G4IonConstructor IonConstructor;
+   IonConstructor.ConstructParticle();
 
-  G4ShortLivedConstructor ShortLivedConstructor;
-  ShortLivedConstructor.ConstructParticle();
+   G4ShortLivedConstructor ShortLivedConstructor;
+   ShortLivedConstructor.ConstructParticle();
 }
 
 void PhysicsList::SetCuts()
 {
-  SetCutsWithDefault();
-  SetCutValue(0.0001 * mm, "gamma");
-  SetCutValue(0.0001 * mm, "e-");
-  SetCutValue(0.0001 * mm, "e+");
+   SetCutsWithDefault();
+   SetCutValue(0.0001 * mm, "gamma");
+   SetCutValue(0.0001 * mm, "e-");
+   SetCutValue(0.0001 * mm, "e+");
 
 }
