@@ -1,0 +1,123 @@
+#include "RunAction.hh"
+
+#include "DetectorConstruction.hh"
+#include "PrimaryGeneratorAction.hh"
+#include "SteppingAction.hh"
+
+#include "G4Run.hh"
+#include "G4RunManager.hh"
+#include "G4SystemOfUnits.hh"
+#include "G4UnitsTable.hh"
+#include "Randomize.hh"
+#include "G4UImanager.hh"
+#include "G4VModularPhysicsList.hh"
+#include <iomanip>
+
+RunAction::RunAction(DetectorConstruction* detector, PrimaryGeneratorAction* primary)
+  : fDetector(detector), fPrimary(primary)
+{
+    G4AnalysisManager *analysisManager = G4AnalysisManager::Instance();
+
+    analysisManager->CreateH1("Edep", "Energy deposit", 8192, 0., 3.5 * MeV);
+
+    analysisManager->CreateNtuple("Photons", "Photons");
+    analysisManager->CreateNtupleIColumn("iEvent");
+    analysisManager->CreateNtupleDColumn("fX");
+    analysisManager->CreateNtupleDColumn("fY");
+    analysisManager->CreateNtupleDColumn("fZ");
+    analysisManager->CreateNtupleDColumn("fGlobalTime");
+    analysisManager->CreateNtupleDColumn("fWlen");
+    analysisManager->FinishNtuple(0);
+}
+
+RunAction::~RunAction()
+{
+}
+
+void RunAction::BeginOfRunAction(const G4Run *run)
+{
+    G4AnalysisManager *analysisManager = G4AnalysisManager::Instance();
+
+    G4int runID = run->GetRunID();
+
+    std::stringstream strRunID;
+    strRunID << runID;
+
+    analysisManager->OpenFile("output" + strRunID.str() + ".root");
+
+    outFile.open("simulation_output.txt");
+
+}
+
+void RunAction::EndOfRunAction(const G4Run *run)
+{
+   G4AnalysisManager *analysisManager = G4AnalysisManager::Instance();
+
+   analysisManager->Write();
+
+   analysisManager->CloseFile();
+
+   G4int runID = run->GetRunID();
+
+   G4cout << "Finishing run " << runID << G4endl;
+
+
+   outFile << "\n ======= Run Summary ======= \n";
+
+   outFile << "\n --- Source --- \n";
+
+//   G4String isotope = fPrimary->GetSoureName();
+//   outFile << "Source present" << isotope << "\n";
+
+   G4int totalEvents = run->GetNumberOfEvents();
+
+//   outFile << "Total events simulated:" << totalEvents << "\n";
+//   outFile << "Total gammas produced:"  << "" << "\n";
+
+   outFile << "\n --- Physics --- \n";
+   auto phys = dynamic_cast<G4VModulatPhysicsList*>(G4RunManager::GetRunManager()->GetUserPhysicsList());
+
+   if (phys)
+   {
+	outFile << "Physics list: " << phys->GetPhysicsName() << "\n"; 
+   }
+
+   outFile << "\n --- Detector Parameters ---  \n";
+
+//   G4double outerdeadlayer = fDetector->GetouterDeadLayerThick();
+   G4double innerdeadlayer = fDetector->GetinnerDeadLayerThick();
+   G4double crystalradius = fDetector->GetCrystalRadius();
+   G4double crystallength = fDetector->GetCrystalHalfLength();
+   G4double shellradius = fDetector->GetShellRadius();
+   G4double shelllength = fDetector->GetShellLength();
+   G4double shellthick = fDetector->GetShellThick();
+   G4double holedepth = fDetector->GetHoleDepth();
+   G4double holeradius = fDetector->GetHoleRadius();
+
+   outFile << "Crystal radius" << crystalradius <<"\n";
+   outFile << "Crystal length" << crystallength <<"\n";
+ //  outFile << "Outer dead layer thickness" << outerdeadlayer <<"\n";
+   outFile << "Inner dead layer thickness" << innerdeadlayer <<"\n";
+   outFile << "Detector endcap radius" << shellradius <<"\n";
+   outFile << "Detector endcap length" << shelllength <<"\n";
+   outFile << "Detector endcap thickness" << shellthick <<"\n";
+   outFile << "Bore hole depth" << holedepth <<"\n";
+   outFile << "Bore hole radius" << holeradius <<"\n";
+
+   outFile << "\n --- Shielding --- \n";
+
+   if(fDetector->HasShielding())
+   {
+   	outFile << "Lead Shielding was placed around the detector";
+   }
+
+   else
+   {
+   	outFile << "No shielding present";
+   }
+
+
+
+    outFile.close();
+
+}

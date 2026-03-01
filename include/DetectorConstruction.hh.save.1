@@ -58,10 +58,7 @@ public:
    void SetDetectorThickness(G4double thickness);
    void SetDetectorMaterial(const G4String& name);
 
-   void SetPbShield(G4bool value) {fUsePbShield = value;}
-   G4bool HasPbShield() const {return fUsePbShield;}
-
-   G4double GetouterDeadLayerThick() const {return fouterDeadLayerThick;};
+   G4double GetouterDeadLayerThick() const;
 
    G4double GetinnerDeadLayerThick() const {return innerDeadLayerThick;}
 
@@ -72,17 +69,12 @@ public:
    G4double GetShellLength() const {return shellLength;}
    G4double GetShellThick() const {return shellThick;}
 
-   G4double GetholderLength() const {return holderLength;}
-   G4double GetholderThick() const {return holderThick;}
-   G4double GetholderTopThick() const {return holderTopThick;}
-   G4double GetholderBottomThick() const {return holderBottomThick;}
-
-   G4double GetkaptonThick() const {return kaptonThick;}
-   G4double GetmylarThick() const {return mylarThick;}
-
    G4double GetHoleDepth() const {return holeDepth;}
-   G4double GetHoleRadius() const {return holeRadius;}
+   G4double GetGetHoleRadius() const {return holeRadius;}
 
+   //for turning the shielding on and off
+   void SetPbShield(G4bool value) {fUsePbShield = vaule;}
+   G4bool HasPbShield() const {return fUsePb}
 
 
 private:

@@ -23,7 +23,7 @@ int main(int argc, char** argv)
    if (argc == 1)
    {
 	ui = new G4UIExecutive(argc, argv, "Qt");
-	//outerdeadlayer = 0.05 *mm;
+//	outerdeadlayer = 0.5 *mm;
    }
 
    else if (argc >= 1)

@@ -8,6 +8,8 @@
 #include "G4GeneralParticleSource.hh"
 #include "G4Event.hh"
 
+#include <vector>
+
 class G4ParticleGun;
 
 class PrimaryGeneratorAction : public G4VUserPrimaryGeneratorAction
@@ -20,6 +22,8 @@ class PrimaryGeneratorAction : public G4VUserPrimaryGeneratorAction
     void GeneratePrimaries(G4Event* event) override;
     G4ParticleGun* GetParticleGun() { return fParticleGun; }
     G4GeneralParticleSource* GetGPS() { return fSource; }
+
+
   private:
 
 	G4GeneralParticleSource* fSource = nullptr;
@@ -28,6 +32,7 @@ class PrimaryGeneratorAction : public G4VUserPrimaryGeneratorAction
 
   	bool fAlternate;
   	G4int fPeriod;
+
 
 };
 

@@ -35,17 +35,17 @@ void Background::GeneratePrimaryVertex(G4Event* event)
 
    G4double r = G4UniformRand();
 
-   if (r < 0.8)
+   if (r < 0.8593)
    {
 	ion_source(19, 40);
    }
 
-   else if (r < 0.85)
+   else if (r < 0.87369)
    {
 	ion_source(92, 235);
    }
 
-   else if (r < 0.9)
+   else if (r < 0.87734)
    {
 	ion_source(92, 238);
    }

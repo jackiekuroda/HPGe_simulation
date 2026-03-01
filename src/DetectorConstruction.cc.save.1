@@ -70,6 +70,10 @@ DetectorConstruction::~DetectorConstruction()
     delete stepLimit;
 }
 
+G4double DetectorConstruction::GetouterDeadLayerThick() const
+{
+   return fouterDeadLayerThick;
+}
 
 void DetectorConstruction::DefineMaterials()
 {
@@ -100,13 +104,11 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
    //ConstructSource(logicWorld);
 
    //to add the shielding
+   //ConstructPbShield(logicWorld);
 
    //to add the lead house used in the pnnl run
    // ConstructAustinLeadHouse(logicWorld);
-   if (fUsePbShield)
-   {
-	   ConstructPbShield(logicWorld);
-   }
+
 
    return physiWorld;
 }
@@ -224,7 +226,7 @@ void   DetectorConstruction::ConstructHPGeDetector(G4LogicalVolume* motherLogica
         G4double  sphi =   0.*deg;
         G4double  dphi = 360.*deg;
 
-	G4double outerDeadLayerThick = GetouterDeadLayerThick();
+	G4double outerDeadLayerThick = fouterDeadLayerThick;
 
         //detector
         G4VSolid *HPGe = new G4Tubs("HPGe", 0.*mm, shellRadius, 0.5*shellLength, sphi, dphi);
@@ -292,12 +294,6 @@ void   DetectorConstruction::ConstructHPGeDetector(G4LogicalVolume* motherLogica
 	G4UserLimits* stepLimit = new G4UserLimits(maxStep);
 
 	fLogActiveCrystal->SetUserLimits(stepLimit);
-	logOuterDeadLayer ->SetUserLimits(stepLimit);
-	logInnerDeadLayer ->SetUserLimits(stepLimit);
-	logholder ->SetUserLimits(stepLimit);
-	logmylar ->SetUserLimits(stepLimit);
-	logkapton ->SetUserLimits(stepLimit);
-	logShell ->SetUserLimits(stepLimit);
 
 	//placing the detector shell in the detector volume
         new G4PVPlacement(0,G4ThreeVector(),logShell,"physiShell", logHPGe,false,0,fCheckOverlaps);

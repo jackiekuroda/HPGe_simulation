@@ -14,29 +14,25 @@ SteppingAction::SteppingAction(){}
 SteppingAction::~SteppingAction(){}
 
 G4int SteppingAction::fGammaCount = 0;
+std::vector<G4double> SteppingAction::fGammaEnergies;
 
 
 void SteppingAction::UserSteppingAction(const G4Step *step)
 {
    G4Track *track = step->GetTrack();
    if (!track) return;
-
    if (track ->GetCurrentStepNumber() != 1) return;
    if (track ->GetDefinition() != G4Gamma::Gamma()) return;
-   if (track->GetKineticEnergy() <= 0) return;
 
-   G4String process = "process";
+   G4String process = "Unknown";
    if (track ->GetCreatorProcess())
 	process = track->GetCreatorProcess()->GetProcessName();
-
    if (process == "Radioactivation")
    {
-	G4cout << "Gamma created by "
-	       << process
-	       << track->GetKineticEnergy()
-	       << G4endl;
- 
-	fGammaCount++;
+	if (track->GetKineticEnergy() > 0)
+   	{
+	   fGammaCount++;
+   	}
    }
 }
 

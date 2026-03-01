@@ -27,7 +27,6 @@ class SteppingAction : public G4UserSteppingAction
 	void UserSteppingAction(const G4Step*) override;
 
 	static G4int fGammaCount;
- 	static std::vector<G4double> fGammaEnergies;
 };
 
 #endif
