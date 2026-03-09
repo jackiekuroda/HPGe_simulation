@@ -14,13 +14,13 @@
 #include "Randomize.hh"
 
 PrimaryGeneratorAction::PrimaryGeneratorAction()
-: fAlternate(true), fPeriod(1)
+: fAlternate(true)
 {
   // Create particle gun with 1 particle
   fParticleGun = new G4ParticleGun(1);
   fParticleGun->SetParticleEnergy(0.0 * eV);
-  fParticleGun->SetParticlePosition(G4ThreeVector(0., 0., 10.*cm));
-  fParticleGun->SetParticleMomentumDirection(G4ThreeVector(0., 0., -1.));
+  fParticleGun->SetParticlePosition(G4ThreeVector(0., 0., 108.68*mm));
+  fParticleGun->SetParticleMomentumDirection(G4ThreeVector(0., 0., 0.));
 
   // Initialize background source
   fBackground = new Background();
@@ -40,7 +40,7 @@ void PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
 
   if (fAlternate)
   {
-    doSource = (eventID % fPeriod == 0);
+    doSource == true;
   }
 
   if (doSource)

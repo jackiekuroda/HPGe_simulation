@@ -27,6 +27,9 @@ void ActionInitialization::Build() const
   SteppingAction* stepping = new SteppingAction();
   SetUserAction(stepping);
 
+  StackingAction* stack = new StackingAction();
+  SetUserAction(stack);
+
   RunAction* runAction = new RunAction(fDetector, primary);
   SetUserAction(runAction);
 

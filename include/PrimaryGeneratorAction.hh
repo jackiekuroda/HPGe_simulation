@@ -31,7 +31,6 @@ class PrimaryGeneratorAction : public G4VUserPrimaryGeneratorAction
    	Background* fBackground;
 
   	bool fAlternate;
-  	G4int fPeriod;
 
 
 };
