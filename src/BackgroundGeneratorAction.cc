@@ -62,7 +62,7 @@ Background::Background()
 	addSource(480.304968* keV, 0.007363, id++);
 	addSource(487.852319* keV, 0.006941, id++);
 	addSource(511.506881* keV, 0.040100, id++);
-	addSource(561.419592* keV, -0.000865, id++);
+	addSource(561.419592* keV, 0.000865, id++);
 	addSource(572.337476* keV, 0.001740, id++);
 	addSource(584.041881* keV, 0.080214, id++);
 	addSource(610.231230* keV, 0.153776, id++);
@@ -81,7 +81,6 @@ Background::Background()
 	addSource(807.459729* keV, 0.004861, id++);
 	addSource(827.211513* keV, 0.002236, id++);
 	addSource(831.682344* keV, 0.001147, id++);
-	addSource(839.227060* keV, 0.626983, id++);
 	addSource(841.508157* keV, 0.012611, id++);
 	addSource(861.998876* keV, 0.013885, id++);
 	addSource(895.115681* keV, 0.001805, id++);
@@ -130,16 +129,8 @@ Background::Background()
 	addSource(2208.398284* keV, 0.038366, id++);
 	addSource(2297.857645* keV, 0.002979, id++);
 	addSource(2452.640611* keV, 0.013372, id++);
-
-
-
+	
 }
-
-Background::~Background()
-{
-	delete fBackgroundSource;
-}
-
 void Background::GeneratePrimaryVertex(G4Event* anEvent)
 {
 	fBackgroundSource->GeneratePrimaryVertex(anEvent);
