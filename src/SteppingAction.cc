@@ -31,11 +31,11 @@ void SteppingAction::UserSteppingAction(const G4Step *step)
 
    if (process == "Radioactivation")
    {
-	G4cout << "Gamma created by "
-	       << process
-	       << track->GetKineticEnergy()
-	       << G4endl;
- 
+//	G4cout << "Gamma created by "
+//	       << process
+//	       << track->GetKineticEnergy()
+//	       << G4endl;
+
 	fGammaCount++;
    }
 }

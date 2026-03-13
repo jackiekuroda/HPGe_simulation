@@ -36,7 +36,7 @@ void PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
 {
 
   auto eventID = anEvent->GetEventID();
-  bool doSource = true;
+  bool doSource = false;
 
   if (fAlternate)
   {
