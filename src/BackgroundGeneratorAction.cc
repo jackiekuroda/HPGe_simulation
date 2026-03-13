@@ -131,6 +131,12 @@ Background::Background()
 	addSource(2452.640611* keV, 0.013372, id++);
 	
 }
+
+Background::~Background()
+{
+	delete fBackgroundSource;
+}
+
 void Background::GeneratePrimaryVertex(G4Event* anEvent)
 {
 	fBackgroundSource->GeneratePrimaryVertex(anEvent);
